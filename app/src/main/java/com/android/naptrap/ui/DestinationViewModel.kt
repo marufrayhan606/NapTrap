@@ -36,4 +36,11 @@ class DestinationViewModel @Inject constructor(
             loadDestinations()
         }
     }
+
+    fun updateTracking(id: Int, isTracked: Boolean) {
+        viewModelScope.launch {
+            repository.updateTracking(id, isTracked)
+            loadDestinations()
+        }
+    }
 }

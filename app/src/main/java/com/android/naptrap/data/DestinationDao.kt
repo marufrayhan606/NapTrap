@@ -12,4 +12,7 @@ interface DestinationDao {
 
     @Delete
     suspend fun deleteDestination(destination: Destination)
+
+    @Query("UPDATE destinations SET isTracked = :isTracked WHERE id = :id")
+    suspend fun updateTracking(id: Int, isTracked: Boolean)
 }

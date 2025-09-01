@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -59,7 +60,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+        implementation("org.osmdroid:osmdroid-android:6.1.16")
+        implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation("androidx.room:room-runtime:2.7.2")
@@ -67,8 +69,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.7.2")
     implementation(libs.androidx.lifecycle.runtime.ktx.v270)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation("com.google.maps.android:maps-compose:6.7.2")
-    implementation("com.google.android.gms:play-services-maps:19.2.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
 }

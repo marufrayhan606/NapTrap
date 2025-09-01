@@ -18,7 +18,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext appContext: Context): AppDatabase =
-        Room.databaseBuilder(appContext, AppDatabase::class.java, "naptrap_db").build()
+        Room.databaseBuilder(appContext, AppDatabase::class.java, "naptrap_db")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     fun provideDestinationDao(db: AppDatabase): DestinationDao = db.destinationDao()

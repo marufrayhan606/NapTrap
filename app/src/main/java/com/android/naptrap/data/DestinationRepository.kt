@@ -10,4 +10,5 @@ class DestinationRepository @Inject constructor(
     suspend fun getAllDestinations() = dao.getAllDestinations()
     suspend fun insertDestination(destination: Destination) = dao.insertDestination(destination)
     suspend fun deleteDestination(destination: Destination) = dao.deleteDestination(destination)
+    suspend fun updateTracking(id: Int, isTracked: Boolean) = dao.updateTracking(id, isTracked)
 }

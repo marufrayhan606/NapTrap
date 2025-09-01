@@ -8,5 +8,6 @@ data class Destination(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val isTracked: Boolean = false
 )
