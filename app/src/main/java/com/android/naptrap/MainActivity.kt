@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.os.Looper
 import android.preference.PreferenceManager
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.android.naptrap.ui.theme.NapTrapTheme
+import com.android.naptrap.utils.GPSUtils
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -44,6 +48,35 @@ class MainActivity : ComponentActivity() {
         setContent {
             NapTrapTheme{
                 val navController = androidx.navigation.compose.rememberNavController()
+                
+                // GPS Enable launcher
+                val gpsLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.StartIntentSenderForResult()
+                ) { result ->
+                    // Handle GPS enable result
+                    if (result.resultCode == RESULT_OK) {
+                        // GPS enabled successfully
+                    } else {
+                        // User declined to enable GPS
+                    }
+                }
+                
+                // Check and prompt for GPS on app start
+                LaunchedEffect(Unit) {
+                    if (!GPSUtils.isGPSEnabled(this@MainActivity)) {
+                        GPSUtils.promptEnableGPSWithLauncher(
+                            activity = this@MainActivity,
+                            launcher = gpsLauncher,
+                            onSuccess = {
+                                // GPS is already enabled
+                            },
+                            onFailure = { exception ->
+                                // Handle error
+                            }
+                        )
+                    }
+                }
+                
                 com.android.naptrap.navigation.NavGraph(navController)
             }
         }

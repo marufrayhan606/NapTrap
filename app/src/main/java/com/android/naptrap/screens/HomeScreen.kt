@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Add
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.naptrap.ui.DestinationViewModel
 import com.android.naptrap.ui.theme.*
+import com.android.naptrap.components.GPSStatusBanner
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,7 +109,10 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 // Header Section
-                ModernHeader()
+                ModernHeader(onNavigate)
+                
+                // GPS Status Banner
+                GPSStatusBanner()
                 
                 // Search Section
 //                SearchSection()
@@ -182,27 +187,50 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
 
 
 @Composable
-fun ModernHeader() {
+fun ModernHeader(onNavigate: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp)
     ) {
-        Column {
-            Text(
-                text = "Find Your Route",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
-                ),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = "Track your destinations smartly",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Find Your Route",
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
-            )
+                Text(
+                    text = "Track your destinations smartly",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                    )
+                )
+            }
+            
+            // Profile Button
+            IconButton(
+                onClick = { onNavigate("profile") },
+                modifier = Modifier
+                    .background(
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                        RoundedCornerShape(12.dp)
+                    )
+            ) {
+                Icon(
+                    Icons.Default.AccountCircle,
+                    contentDescription = "Profile",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     }
 }

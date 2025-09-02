@@ -12,7 +12,20 @@
           "package_name": "com.android.naptrap"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "575709624348-t521vqukij9j96o5jkb0kl2shjb1tgak.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.naptrap",
+            "certificate_hash": "e89ab565bad89bbd2614d8514ccf35bb7649e234"
+          }
+        },
+        {
+          "client_id": "575709624348-t46al1n915mihblh9g7c3l8qmcdstd19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC5ySFAY81pnhGltyZvoAz_b5bljTSVZdg"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575709624348-t46al1n915mihblh9g7c3l8qmcdstd19.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

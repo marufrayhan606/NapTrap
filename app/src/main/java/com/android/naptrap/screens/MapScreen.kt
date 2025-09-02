@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import com.android.naptrap.ui.theme.*
+import com.android.naptrap.components.GPSStatusBanner
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,6 +119,9 @@ fun MapScreen(onNavigateBack: () -> Unit) {
                     Spacer(modifier = Modifier.width(48.dp)) // Balance the back button
                 }
             }
+            
+            // GPS Status Banner
+            GPSStatusBanner()
             
             // Modern Search Bar
             Card(

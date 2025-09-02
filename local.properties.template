@@ -1,0 +1,15 @@
+# Copy this file to local.properties and fill in your actual values
+# This file should NOT be committed to version control
+
+# Android SDK location
+sdk.dir=YOUR_ANDROID_SDK_PATH_HERE
+
+# Firebase Configuration
+# Get these values from Firebase Console
+WEB_CLIENT_ID=YOUR_WEB_CLIENT_ID_FROM_FIREBASE_CONSOLE
+
+# Instructions:
+# 1. Go to Firebase Console -> Project Settings -> Your Apps
+# 2. Copy the Web Client ID from Google services configuration
+# 3. Replace YOUR_WEB_CLIENT_ID_FROM_FIREBASE_CONSOLE with the actual value
+# 4. Make sure this file (local.properties) is in .gitignore
