@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Alignment
+import com.android.naptrap.ui.theme.*
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,38 +67,113 @@ fun MapScreen(onNavigateBack: () -> Unit) {
     var currentLocationLon by remember { mutableStateOf<Double?>(null) }
     val sheetState = rememberModalBottomSheetState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.primaryContainer
+                    )
+                )
+            )
+    ) {
+        Column {
+            // Modern Header
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    IconButton(
+                        onClick = onNavigateBack,
+                        modifier = Modifier
+                            .background(
+                                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                                RoundedCornerShape(12.dp)
+                            )
                     ) {
-                        OutlinedTextField(
-                            value = searchQuery,
-                            onValueChange = { searchQuery = it },
-                            label = { Text("Search location") },
-                            singleLine = true,
-                            modifier = Modifier.weight(1f)
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Button(
-                            onClick = {
-                                isSearching = true
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    try {
-                                        val client = OkHttpClient()
-                                        val url = "https://nominatim.openstreetmap.org/search?format=json&q=" + java.net.URLEncoder.encode(searchQuery, "UTF-8") + "&limit=5"
-                                        val request = Request.Builder()
-                                            .url(url)
-                                            .header("User-Agent", "NapTrap/1.0")
-                                            .build()
-                                        val response = client.newCall(request).execute()
-                                        val body = response.body?.string()
-                                        val results = mutableListOf<SearchResult>()
-                                        if (body != null) {
-                                            val arr = JSONArray(body)
+                    }
+                    
+                    Text(
+                        text = "Your Route",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    )
+                    
+                    Spacer(modifier = Modifier.width(48.dp)) // Balance the back button
+                }
+            }
+            
+            // Modern Search Bar
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.LocationOn,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(end = 12.dp)
+                    )
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        placeholder = { 
+                            Text(
+                                "Find Destination",
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            ) 
+                        },
+                        singleLine = true,
+                        modifier = Modifier.weight(1f),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                        ),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    IconButton(
+                        onClick = {
+                            isSearching = true
+                            CoroutineScope(Dispatchers.IO).launch {
+                                try {
+                                    val client = OkHttpClient()
+                                    val url = "https://nominatim.openstreetmap.org/search?format=json&q=" + java.net.URLEncoder.encode(searchQuery, "UTF-8") + "&limit=5"
+                                    val request = Request.Builder()
+                                        .url(url)
+                                        .header("User-Agent", "NapTrap/1.0")
+                                        .build()
+                                    val response = client.newCall(request).execute()
+                                    val body = response.body?.string()
+                                    val results = mutableListOf<SearchResult>()
+                                    if (body != null) {
+                                        val arr = JSONArray(body)
                                             for (i in 0 until arr.length()) {
                                                 val obj = arr.getJSONObject(i)
                                                 val name = obj.getString("display_name")
@@ -150,27 +231,10 @@ fun MapScreen(onNavigateBack: () -> Unit) {
                             }
                         }
                     }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
                 }
-            )
-        }
-    ) { padding ->
-        // Map should fill the whole screen below the top bar
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-
-            // ...existing code...
+            }
+            
+            // Map Container
             Box(modifier = Modifier.fillMaxSize()) {
                     androidx.compose.ui.viewinterop.AndroidView(
                         modifier = Modifier.fillMaxSize(),

@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.android.naptrap" />
+                  <option name="mobileSdkAppId" value="1:575709624348:android:8184e9b492cc3ff16e07d9" />
+                  <option name="projectId" value="naptrap-2025" />
+                  <option name="projectNumber" value="575709624348" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
